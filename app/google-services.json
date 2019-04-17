@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "889318021069",
+    "firebase_url": "https://city-guide-3faeb.firebaseio.com",
+    "project_id": "city-guide-3faeb",
+    "storage_bucket": "city-guide-3faeb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889318021069:android:0dba754d46579384",
+        "android_client_info": {
+          "package_name": "com.abhiandroid.adventureindia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889318021069-bb22inq6st5h21lj4gted0f5u9c1ca7k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc7jC5Syxl3duo7z8IAIj1Iv7gSBOrxbc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
