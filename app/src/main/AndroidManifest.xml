@@ -37,6 +37,8 @@
         <activity
             android:name=".CategoryPlaceList"
             android:windowSoftInputMode="adjustPan" />
+
+
         <activity
             android:name=".SplashScreen"
             android:windowSoftInputMode="adjustPan">

@@ -43,8 +43,6 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
             @Override
             public void success(RegistrationResponse registrationResponse, Response response) {
                 Log.d("registrationResponse",registrationResponse.getSuccess());
-
-
             }
 
             @Override

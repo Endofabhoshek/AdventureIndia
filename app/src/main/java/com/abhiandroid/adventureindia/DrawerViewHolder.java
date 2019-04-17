@@ -36,7 +36,8 @@ public class DrawerViewHolder extends RecyclerView.ViewHolder {
                         ((MainActivity) context).loadFragment(new Favorite(), false);
                         break;
                     case 2:
-                        ((MainActivity) context).loadFragment(new ContactUs(), false);
+//                        ((MainActivity) context).loadFragment(new ContactUs(), false);
+
                         break;
                     case 3:
                         // perform click on Rate Item

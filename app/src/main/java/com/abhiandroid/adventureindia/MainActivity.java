@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -29,12 +30,20 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.abhiandroid.adventureindia.MVP.RegisterUserResponse;
+import com.abhiandroid.adventureindia.Model.SharedPrefManager;
+
 import com.abhiandroid.adventureindia.Fragments.PlaceDetail;
+import com.abhiandroid.adventureindia.Model.User;
+import com.abhiandroid.adventureindia.Retrofit.Api;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import com.google.android.gms.ads.AdRequest;
@@ -42,6 +51,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import com.abhiandroid.adventureindia.Fragments.Categories;
@@ -51,11 +61,17 @@ import com.abhiandroid.adventureindia.Fragments.AllPlaces;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends FragmentActivity implements LocationListener {
 
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
+    EditText editTextUsername, editTextEmail, editTextPassword;
+    RadioGroup radioGroupGender;
+
     public static DrawerLayout drawerLayout;
     public static List<String> menuTitles;
     public static ArrayList<Integer> menuIcons = new ArrayList<>(Arrays.asList(R.drawable.home_icon, R.drawable.star_icon, R.drawable.contact_icon, R.drawable.rate_icon, R.drawable.about_icon, R.drawable.more_icon));
@@ -76,6 +92,7 @@ public class MainActivity extends FragmentActivity implements LocationListener {
     public static double latitude, longitude;
     private PrefManager prefManager;
     public static boolean firstTime = true;
+    public static String userName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +102,9 @@ public class MainActivity extends FragmentActivity implements LocationListener {
         ButterKnife.bind(this);
         prefManager = new PrefManager(this);
         getFavoriteData(); // get saved favorite list data
+        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+            userName = SharedPrefManager.getInstance(this).getUser().getUsername();
+        }
 
 
         // Obtain the FirebaseAnalytics instance.
@@ -133,6 +153,90 @@ public class MainActivity extends FragmentActivity implements LocationListener {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+
+//        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+//            finish();
+//            startActivity(new Intent(this, Login.class));
+//        }
+
+//        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
+//        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+//        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+//        radioGroupGender = (RadioGroup) findViewById(R.id.radioGender);
+
+
+//        findViewById(R.id.buttonRegister).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //if user pressed on button register
+//                //here we will register the user to server
+//                registerUser();
+//            }
+//           });
+//
+//        findViewById(R.id.textViewLogin).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //if user pressed on login
+//                //we will open the login screen
+//                finish();
+//                startActivity(new Intent(MainActivity.this, Login.class));
+//            }
+//        });
+
+
+
+//        ButterKnife.bind(this);
+//        prefManager = new PrefManager(this);
+//        getFavoriteData(); // get saved favorite list data
+//
+//
+//        // Obtain the FirebaseAnalytics instance.
+//        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        menuTitles = Arrays.asList(getResources().getStringArray(R.array.menuArray));
+//        title = (TextView) findViewById(R.id.title);
+//        menu = (ImageView) findViewById(R.id.menu);
+//        share = (ImageView) findViewById(R.id.share);
+//        search = (ImageView) findViewById(R.id.search);
+//        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        searchView = (SearchView) findViewById(R.id.searchView);
+//        // customized searchView
+//        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+//        EditText searchEditText = (EditText) searchView.findViewById(id);
+//        searchEditText.setTextColor(getResources().getColor(R.color.color_white));
+//        searchEditText.setHintTextColor(getResources().getColor(R.color.light_white));
+//        // display Banner Ads
+//        mAdView = (AdView) findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice("A9C93B8F0F67284AB70DF28784CA0F1C")
+//                .build();
+//        mAdView.loadAd(adRequest);
+//        // load home fragment
+//        loadFragment(new Home(), false);
+//        setRecyclerData(); // set drawer items
+//        // implement onQueryTextListener on searchView
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                // filter news list
+//                String text = s;
+//                AllPlaces.allPlacesAdapter.filter(text);
+//                Categories.categoriesAdapter.filter(text);
+//                return false;
+//            }
+//        });
+//        displayFirebaseRegId(); // display firebase id
+//        if (SplashScreen.id.length() > 0) {
+//            Intent intent = new Intent(MainActivity.this, PlaceDetail.class);
+//            intent.putExtra("pos", 0);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//        }
 
     }
 
@@ -217,11 +321,15 @@ public class MainActivity extends FragmentActivity implements LocationListener {
 
     public void shareApp() {
         // share app with your friends
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
-        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//        shareIntent.setType("text/*");
+//        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+//        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+
+         Intent myIntent = new Intent(this, Login.class);
+         myIntent.putExtra("userName", userName);
+         startActivity(myIntent);
     }
 
     @Override
@@ -369,5 +477,80 @@ public class MainActivity extends FragmentActivity implements LocationListener {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void registerUser(){
+        final String username = editTextUsername.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
+
+        final String gender = ((RadioButton) findViewById(radioGroupGender.getCheckedRadioButtonId())).getText().toString();
+
+        if (TextUtils.isEmpty(username)) {
+            editTextUsername.setError("Please enter username");
+            editTextUsername.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(email)) {
+            editTextEmail.setError("Please enter your email");
+            editTextEmail.requestFocus();
+            return;
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Enter a valid email");
+            editTextEmail.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            editTextPassword.setError("Enter a password");
+            editTextPassword.requestFocus();
+            return;
+        }
+
+        class RegisterUser extends AsyncTask<Void, Void, String> {
+            private ProgressBar progressBar;
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                //creating request handler object
+
+                Api.getClient().sendRegistrationDetails(username, email, password,
+                        new Callback<RegisterUserResponse>() {
+                            @Override
+                            public void success(RegisterUserResponse registerUserResponse, Response response) {
+
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
+                return  "";
+            }
+
+            @Override
+            protected void onPreExecute(){
+                super.onPreExecute();
+                //displaying the progress bar while user registers on the server
+                progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                progressBar.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            protected void onPostExecute(String s){
+                User user = new User("a","aa","mal",1);
+                SharedPrefManager.getInstance(getApplicationContext()).userLogin(user);
+                finish();
+                startActivity(new Intent(getApplicationContext(), CategoryPlaceList.class));
+            }
+
+        }
+        RegisterUser ru = new RegisterUser();
+        ru.execute();
     }
 }

@@ -8,7 +8,6 @@ public class RegistrationResponse {
 private String Success;
 private String Message;
 private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
 public String getSuccess() {
 return Success;
 }
