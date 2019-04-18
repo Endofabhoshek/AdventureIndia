@@ -43,7 +43,7 @@
             android:inputType="textPassword" />
 
         <RadioGroup
-            android:id="@+id/radioGender"
+            android:id="@+id/radioGroupGender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -72,7 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:text="Register" />
+            android:text="Register"
+            />
+
+        <!--android:onClick="RegisterUser"-->
 
         <TextView
             android:id="@+id/textViewLogin"
@@ -82,7 +85,8 @@
             android:layout_marginTop="8dp"
             android:text="Already Registered?\nLogin Here"
             android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:onClick="LoginPage"/>
     </LinearLayout>
 
     <ProgressBar

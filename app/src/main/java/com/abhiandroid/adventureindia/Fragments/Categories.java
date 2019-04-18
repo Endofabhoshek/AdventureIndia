@@ -81,5 +81,4 @@ public class Categories extends Fragment {
         categoriesAdapter = new CategoriesAdapter(getActivity(), SplashScreen.categoryListResponseData);
         recyclerview.setAdapter(categoriesAdapter);
     }
-
 }

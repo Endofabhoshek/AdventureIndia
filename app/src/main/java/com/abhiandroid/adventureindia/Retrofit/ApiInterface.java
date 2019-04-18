@@ -9,10 +9,12 @@ import com.abhiandroid.adventureindia.MVP.RegistrationResponse;
 import com.abhiandroid.adventureindia.MVP.RegisterUserResponse;
 
 import retrofit.Callback;
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit2.Call;
 
 public interface ApiInterface {
 
@@ -29,7 +31,8 @@ public interface ApiInterface {
     public void sendAccessToken(@Field("accesstoken") String accesstoken, Callback<RegistrationResponse> callback);
 
     @FormUrlEncoded
-    @POST("")
-    public void sendRegistrationDetails(@Field("username") String username,@Field("email") String email,
-                                        @Field("password") String password, Callback<RegisterUserResponse> callback);
+    @POST("/app_dashboard/JSON/register.php")
+    public void sendRegistrationDetails(@Field("username") String username, @Field("email") String email,
+                                            @Field("password") String password, @Field("gender") String gender,
+                                            Callback<RegisterUserResponse> callback);
 }
