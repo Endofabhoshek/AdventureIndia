@@ -14,7 +14,6 @@
     <string-array name="menuArray">
         <item>All Places</item>
         <item>Favorite Places</item>
-        <item>Login</item>
     </string-array>
 
     <string name="next">NEXT</string>

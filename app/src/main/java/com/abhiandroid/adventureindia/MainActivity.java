@@ -320,12 +320,6 @@ public class MainActivity extends FragmentActivity implements LocationListener {
 
 
     public void shareApp() {
-        // share app with your friends
-//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        shareIntent.setType("text/*");
-//        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
-//        startActivity(Intent.createChooser(shareIntent, "Share Using"));
 
          if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
              Intent myIntent = new Intent(this, WelcomeProfile.class);

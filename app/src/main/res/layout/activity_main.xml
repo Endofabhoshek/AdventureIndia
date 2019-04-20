@@ -55,7 +55,7 @@
                 android:id="@+id/txtCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="City"
+                android:text="Adventure"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:layout_marginTop="40dp"
@@ -65,7 +65,7 @@
                 android:layout_below="@+id/txtCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Guide"
+                android:text="India"
                 android:textSize="18sp"
                 android:layout_marginLeft="25dp"
                 android:textColor="@color/color_white"/>

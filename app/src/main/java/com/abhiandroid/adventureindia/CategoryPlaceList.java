@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.abhiandroid.adventureindia.Model.SharedPrefManager;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -110,11 +111,16 @@ public class CategoryPlaceList extends Activity {
         super.onDestroy();
     }
     public void shareApp() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this Smart News App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
-        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+        if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
+            Intent myIntent = new Intent(this, WelcomeProfile.class);
+
+            startActivity(myIntent);
+        }
+        else{
+            Intent myIntent = new Intent(this, Login.class);
+
+            startActivity(myIntent);
+        }
     }
 
     private void setData() {

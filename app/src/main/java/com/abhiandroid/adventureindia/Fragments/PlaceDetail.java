@@ -28,6 +28,7 @@ import com.abhiandroid.adventureindia.Model.User;
 import com.abhiandroid.adventureindia.OptionalImageFullView;
 import com.abhiandroid.adventureindia.R;
 import com.abhiandroid.adventureindia.Retrofit.MySingleton;
+import com.abhiandroid.adventureindia.WelcomeProfile;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -331,11 +332,17 @@ public class PlaceDetail extends AppCompatActivity {
 
     public void shareApp() {
         // share app with friends
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
-        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+        if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
+            Intent myIntent = new Intent(this, WelcomeProfile.class);
+            startActivity(myIntent);
+        }
+        else{
+            Intent myIntent = new Intent(this, Login.class);
+
+            startActivity(myIntent);
+        }
+
+
     }
 
     private void showRateDialog() {
@@ -349,11 +356,6 @@ public class PlaceDetail extends AppCompatActivity {
                         dialogInterface.dismiss();
                         editor.putString("rate", "Yes");
                         editor.commit();
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getApplicationContext().getPackageName())));
-                        } catch (android.content.ActivityNotFoundException anfe) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
-                        }
 
                     }
                 })
@@ -400,7 +402,7 @@ public class PlaceDetail extends AppCompatActivity {
 
         String url = "http://192.168.1.103/app_dashboard/JSON/addbooking.php";
 
-        if (SharedPrefManager.getInstance(getApplicationContext()).getUser() ==  null){
+        if (SharedPrefManager.getInstance(getApplicationContext()).getUser().getUsername() == null){
             Toast.makeText(getApplicationContext(), "Please login and try!", Toast.LENGTH_SHORT).show();
             return;
         }

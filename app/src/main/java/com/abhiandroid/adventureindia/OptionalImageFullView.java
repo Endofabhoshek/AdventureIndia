@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.abhiandroid.adventureindia.Model.SharedPrefManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -83,12 +84,15 @@ public class OptionalImageFullView extends AppCompatActivity {
     }
 
     public void shareApp() {
-        // share app with friends
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
-        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+        if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
+            Intent myIntent = new Intent(this, WelcomeProfile.class);
+            startActivity(myIntent);
+        }
+        else{
+            Intent myIntent = new Intent(this, Login.class);
+
+            startActivity(myIntent);
+        }
     }
 
     class CustomPagerAdapter extends PagerAdapter {
