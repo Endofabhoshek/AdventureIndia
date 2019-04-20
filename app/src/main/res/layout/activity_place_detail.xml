@@ -121,7 +121,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Facilities:"
+                            android:text="Difficulty:"
                             android:textColor="#4D4D4D"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -413,12 +413,13 @@
         app:layout_collapseMode="none" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnBookNow"
         android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:background="@color/bg_screen3"
         android:text="booknow"
         ads:layout_anchor="@+id/appbar"
         ads:layout_anchorGravity="bottom|center"
-        tools:text="Book Now" />
+        tools:text="Book Now"
+        android:onClick="BookNow"/>
 </android.support.design.widget.CoordinatorLayout>

@@ -2,6 +2,8 @@ package com.abhiandroid.adventureindia.Retrofit2;
 
 import com.abhiandroid.adventureindia.Retrofit.ApiInterface;
 
+
+
 import retrofit.RestAdapter;
 import retrofit2.Retrofit;
 
@@ -10,7 +12,7 @@ public class ServiceImplementation {
 
         // change your base URL
         Retrofit adapter = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.105") //Setting the Root URL
+                .baseUrl("http://192.168.1.103")
                 .build(); //Finally building the adapter
 
         //Creating object for our interface

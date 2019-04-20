@@ -14,15 +14,25 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abhiandroid.adventureindia.Login;
 import com.abhiandroid.adventureindia.MVP.Place;
 import com.abhiandroid.adventureindia.MainActivity;
 import com.abhiandroid.adventureindia.MapViewActivity;
+import com.abhiandroid.adventureindia.Model.SharedPrefManager;
+import com.abhiandroid.adventureindia.Model.User;
 import com.abhiandroid.adventureindia.OptionalImageFullView;
 import com.abhiandroid.adventureindia.R;
+import com.abhiandroid.adventureindia.Retrofit.MySingleton;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,11 +44,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,6 +62,7 @@ public class PlaceDetail extends AppCompatActivity {
 
     @Bind({R.id.bannerImage, R.id.image, R.id.image1, R.id.image2, R.id.image3, R.id.image4, R.id.shadowIcon})
     List<ImageView> imageViews;
+    private ProgressBar progressBar;
     int pos;
     public static int addTime = 1;
     InterstitialAd mInterstitialAd;
@@ -165,6 +180,15 @@ public class PlaceDetail extends AppCompatActivity {
         title.setText("");
         setData();
         integrateMap();
+
+        findViewById(R.id.btnBookNow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if user pressed on button register
+                //here we will register the user to server
+                BookTrek();
+            }
+        });
     }
 
     private void integrateMap() {
@@ -369,5 +393,48 @@ public class PlaceDetail extends AppCompatActivity {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+    }
+
+    public void BookTrek() {
+
+
+        String url = "http://192.168.1.103/app_dashboard/JSON/addbooking.php";
+
+        if (SharedPrefManager.getInstance(getApplicationContext()).getUser() ==  null){
+            Toast.makeText(getApplicationContext(), "Please login and try!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                JsonParser parser = new JsonParser();
+                JsonObject json = (JsonObject) parser.parse(response);
+                String success =  json.get("Success").getAsString();
+                if (success.equals("true")){
+                    Toast.makeText(getApplicationContext(), json.get("Message").getAsString(), Toast.LENGTH_SHORT).show();
+                }
+                else if(success.equals("false")){
+                    Toast.makeText(getApplicationContext(),  json.get("Message").getAsString(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(), "ErrorResponse",Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", SharedPrefManager.getInstance(getApplicationContext()).getUser().getUsername());
+                params.put("treklocation", newsListResponsesData.get(pos).getTitle());
+                params.put("userid", SharedPrefManager.getInstance(getApplicationContext()).getUser().getId().toString());
+                return  params;
+            }
+        };
+        MySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 }

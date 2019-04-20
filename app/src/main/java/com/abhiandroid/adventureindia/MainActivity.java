@@ -102,7 +102,7 @@ public class MainActivity extends FragmentActivity implements LocationListener {
         ButterKnife.bind(this);
         prefManager = new PrefManager(this);
         getFavoriteData(); // get saved favorite list data
-        if (SharedPrefManager.getInstance(this).isLoggedIn()){
+        if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
             userName = SharedPrefManager.getInstance(this).getUser().getUsername();
         }
 
@@ -327,9 +327,18 @@ public class MainActivity extends FragmentActivity implements LocationListener {
 //        shareIntent.putExtra(Intent.EXTRA_TEXT, "Try this City Info App: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
 //        startActivity(Intent.createChooser(shareIntent, "Share Using"));
 
-         Intent myIntent = new Intent(this, Login.class);
-         myIntent.putExtra("userName", userName);
-         startActivity(myIntent);
+         if (SharedPrefManager.getInstance(getApplicationContext()).isLoggedIn()){
+             Intent myIntent = new Intent(this, WelcomeProfile.class);
+             myIntent.putExtra("userName", userName);
+             startActivity(myIntent);
+         }
+         else{
+             Intent myIntent = new Intent(this, Login.class);
+             myIntent.putExtra("userName", userName);
+             startActivity(myIntent);
+         }
+
+
     }
 
     @Override
